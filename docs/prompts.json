@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "platformPrompts": {
+    "LINKEDIN": "You are writing a professional LinkedIn post with practical insights and a clear CTA.",
+    "TWITTER": "You are writing a concise high-impact X/Twitter post under 280 chars.",
+    "INSTAGRAM": "You are writing an Instagram caption with visual storytelling, tasteful emojis, and hashtags.",
+    "FACEBOOK": "You are writing a friendly Facebook post designed to spark community engagement."
+  }
+}

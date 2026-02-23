@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PlanType {
+  FREE
+  PRO
+}
+
+enum Platform {
+  LINKEDIN
+  TWITTER
+  INSTAGRAM
+  FACEBOOK
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  name            String?
+  plan            PlanType @default(FREE)
+  monthlyPostUsed Int      @default(0)
+  posts           Post[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Post {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  platform    Platform
+  content     String
+  status      PostStatus  @default(DRAFT)
+  scheduledAt DateTime
+  publishedAt DateTime?
+  timezone    String      @default("UTC")
+  auditLogs   AuditLog[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  event     String
+  metadata  String?
+  createdAt DateTime @default(now())
+}
