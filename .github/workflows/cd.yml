@@ -1,0 +1,19 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: docker build -t postpilot-web -f apps/web/Dockerfile .
+      - run: docker build -t postpilot-api -f apps/api/Dockerfile .
+      - run: npm run prisma:migrate -w apps/api
+      - run: echo "Deploy step is environment-specific"
